@@ -8,6 +8,10 @@ CREATE TABLE organizations (
   website TEXT,
   logo TEXT,
   email TEXT,
+  industry TEXT,
+  description TEXT CHECK (char_length(description) <= 140),
+  brand_voice TEXT[],
+  logo_policy TEXT CHECK (logo_policy IN ('always', 'usually', 'rarely')) DEFAULT 'usually',
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

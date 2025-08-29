@@ -3,12 +3,20 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import * as Select from '$lib/components/ui/select';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import { Badge } from '$lib/components/ui/badge';
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
+	import { INDUSTRY_OPTIONS, BRAND_VOICE_OPTIONS, LOGO_POLICY_OPTIONS } from '$lib/constants/organization-onboarding';
 
 	let { form }: { form: ActionData } = $props();
 
 	let organizationName = $state('');
+	let industry = $state('');
+	let description = $state('');
+	let brandVoice = $state<string[]>([]);
+	let logoPolicy = $state('usually');
 	let loading = $state(false);
 </script>
 
@@ -68,6 +76,100 @@
 			</p>
 		</div>
 
+		<div class="space-y-2">
+			<Label for="industry" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+				Setor/Categoria *
+			</Label>
+			<Select.Root
+				type="single"
+				bind:value={industry}
+				disabled={loading}
+			>
+				<Select.Trigger class="min-h-12 w-full">
+					{industry ? INDUSTRY_OPTIONS.find(opt => opt.value === industry)?.label : 'Selecione o setor da sua empresa'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each INDUSTRY_OPTIONS as option (option.value)}
+						<Select.Item value={option.value}>{option.label}</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
+			<input type="hidden" name="industry" value={industry} />
+		</div>
+
+		<div class="space-y-2">
+			<Label for="description" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+				O que vocês fazem *
+			</Label>
+			<Textarea
+				id="description"
+				name="description"
+				placeholder="Descreva brevemente o que sua empresa faz..."
+				bind:value={description}
+				class="text-base resize-none"
+				disabled={loading}
+				maxlength={140}
+				rows={3}
+				required
+			/>
+			<p class="text-xs text-gray-500 dark:text-gray-400">
+				{description.length}/140 caracteres
+			</p>
+		</div>
+
+		<div class="space-y-3">
+			<Label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+				Tom da marca (escolha 1-3) *
+			</Label>
+			<div class="flex flex-wrap gap-2">
+				{#each BRAND_VOICE_OPTIONS as option (option.value)}
+					<button
+						type="button"
+						class="transition-all"
+						disabled={loading}
+						onclick={() => {
+							if (brandVoice.includes(option.value)) {
+								brandVoice = brandVoice.filter(v => v !== option.value);
+							} else if (brandVoice.length < 3) {
+								brandVoice = [...brandVoice, option.value];
+							}
+						}}
+					>
+						<Badge
+							variant={brandVoice.includes(option.value) ? 'default' : 'outline'}
+							class="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+						>
+							{option.label}
+						</Badge>
+					</button>
+				{/each}
+			</div>
+			{#each brandVoice as voice (voice)}
+				<input type="hidden" name="brandVoice" value={voice} />
+			{/each}
+		</div>
+
+		<div class="space-y-3">
+			<Label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+				Política de logo *
+			</Label>
+			<div class="space-y-2">
+				{#each LOGO_POLICY_OPTIONS as option (option.value)}
+					<label class="flex items-center gap-3 cursor-pointer">
+						<input
+							type="radio"
+							name="logoPolicy"
+							value={option.value}
+							bind:group={logoPolicy}
+							disabled={loading}
+							class="h-4 w-4 text-primary"
+						/>
+						<span class="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+					</label>
+				{/each}
+			</div>
+		</div>
+
 		{#if form?.error}
 			<div class="text-sm text-red-600">{form.error}</div>
 		{/if}
@@ -76,7 +178,7 @@
 			<Button
 				type="submit"
 				class="h-12 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-base text-white transition-all duration-200 hover:from-purple-700 hover:to-pink-700"
-				disabled={loading || !organizationName.trim()}
+				disabled={loading || !organizationName.trim() || !industry || !description.trim() || brandVoice.length === 0 || !logoPolicy}
 				data-testid="create-org-button"
 			>
 				{#if loading}

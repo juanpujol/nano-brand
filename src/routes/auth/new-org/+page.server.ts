@@ -1,5 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
+import { safeParse } from 'valibot';
+import { createOrganizationSchema } from '$lib/schemas/organization-onboarding';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { user, memberships } = await safeGetSession();
@@ -28,19 +30,24 @@ export const actions: Actions = {
 		}
 
 		const data = await request.formData();
-		const organizationName = data.get('organizationName') as string;
+		const formData = {
+			organizationName: data.get('organizationName') as string,
+			industry: data.get('industry') as string || undefined,
+			description: data.get('description') as string || undefined,
+			brandVoice: data.getAll('brandVoice') as string[] || undefined,
+			logoPolicy: data.get('logoPolicy') as string || undefined
+		};
 
-		if (!organizationName || !organizationName.trim()) {
-			return fail(400, { error: 'Nome da organização é obrigatório' });
-		}
-
-		if (organizationName.trim().length > 50) {
-			return fail(400, {
-				error: 'Nome da organização deve ter no máximo 50 caracteres'
-			});
+		const result = safeParse(createOrganizationSchema, formData);
+		
+		if (!result.success) {
+			const firstError = result.issues[0];
+			return fail(400, { error: firstError.message });
 		}
 
 		let orgId: string;
+
+		const { organizationName, industry, description, brandVoice, logoPolicy } = result.output;
 
 		try {
 			// Create organization with admin membership using database function
@@ -50,6 +57,22 @@ export const actions: Actions = {
 			});
 
 			if (orgError) throw orgError;
+
+			// Update organization with additional fields if provided
+			if (industry || description || brandVoice || logoPolicy) {
+				const updateData: Record<string, string | string[]> = {};
+				if (industry) updateData.industry = industry;
+				if (description) updateData.description = description;
+				if (brandVoice && brandVoice.length > 0) updateData.brand_voice = brandVoice;
+				if (logoPolicy) updateData.logo_policy = logoPolicy;
+
+				const { error: updateError } = await supabase
+					.from('organizations')
+					.update(updateData)
+					.eq('id', orgResult);
+
+				if (updateError) throw updateError;
+			}
 
 			// Create default dashboard for the new organization
 			const { error: dashboardError } = await supabase.from('dashboards').insert({
