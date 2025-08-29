@@ -94,7 +94,7 @@ export const actions: Actions = {
 			});
 		}
 
-		// Redirect after successful completion
-		redirect(303, `/orgs/${orgId}`);
+		// Redirect to logo upload page after successful completion
+		redirect(303, `/new-org/logo?org=${orgId}`);
 	}
 };
