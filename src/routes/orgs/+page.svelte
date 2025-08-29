@@ -18,7 +18,7 @@
 	}
 
 	function createNewOrganization() {
-		goto('/auth/new-org');
+		goto('/new-org');
 	}
 </script>
 

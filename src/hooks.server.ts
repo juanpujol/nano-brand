@@ -53,7 +53,7 @@ const supabaseHandle: Handle = async ({ event, resolve }) => {
 const authGuard: Handle = async ({ event, resolve }) => {
 	const { session, memberships } = await event.locals.safeGetSession();
 	const isAuthPage = event.url.pathname.startsWith('/auth');
-	const isSetupOrgPage = event.url.pathname === '/auth/new-org';
+	const isSetupOrgPage = event.url.pathname === '/new-org';
 
 	// Redirect unauthenticated users to login, except for auth pages
 	if (!session && !isAuthPage && event.url.pathname !== '/') {
@@ -66,7 +66,7 @@ const authGuard: Handle = async ({ event, resolve }) => {
 
 		// If user has no organization and not on setup page, redirect to setup
 		if (!hasOrg && !isSetupOrgPage && !event.url.pathname.startsWith('/auth/')) {
-			redirect(303, '/auth/new-org');
+			redirect(303, '/new-org');
 		}
 
 		// If user has organization and on login/setup page, redirect to app
@@ -76,7 +76,7 @@ const authGuard: Handle = async ({ event, resolve }) => {
 
 		// If user has no organization and on login page, redirect to setup
 		if (!hasOrg && event.url.pathname === '/auth/login') {
-			redirect(303, '/auth/new-org');
+			redirect(303, '/new-org');
 		}
 	}
 

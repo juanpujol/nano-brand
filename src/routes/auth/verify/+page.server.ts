@@ -63,6 +63,6 @@ export const actions: Actions = {
 		}
 
 		// Redirect to new organization page for new users
-		redirect(303, '/auth/new-org');
+		redirect(303, '/new-org');
 	}
 };
