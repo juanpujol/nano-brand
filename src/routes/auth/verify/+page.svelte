@@ -15,7 +15,7 @@
 </script>
 
 <AuthLayout
-	title="Verifique seu e-mail"
+	title="Verify your email"
 	iconGradient="from-green-500 to-blue-600"
 	backgroundGradient="from-blue-200 via-white to-purple-200"
 	onBack={handleBack}
@@ -40,7 +40,7 @@
 
 	{#snippet description()}
 		<div>
-			<p class="mb-1 text-gray-600 dark:text-gray-400">Enviamos um código de verificação para</p>
+			<p class="mb-1 text-gray-600 dark:text-gray-400">We sent a verification code to</p>
 			<p class="text-sm font-medium text-gray-900 dark:text-white">{data.email}</p>
 		</div>
 	{/snippet}
@@ -100,7 +100,7 @@
 					class="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
 					data-testid="resend-link"
 				>
-					Reenviar código
+					Resend code
 				</a>
 			</div>
 		</div>
@@ -116,10 +116,10 @@
 					<div
 						class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
 					></div>
-					Verificando...
+					Verifying...
 				</div>
 			{:else}
-				Verificar código
+				Verify code
 			{/if}
 		</Button>
 	</form>
@@ -127,7 +127,7 @@
 	{#snippet footer()}
 		<div class="text-center">
 			<p class="text-xs text-gray-500 dark:text-gray-400">
-				Não recebeu o código? Verifique sua pasta de spam
+				Didn't receive the code? Check your spam folder
 			</p>
 		</div>
 	{/snippet}

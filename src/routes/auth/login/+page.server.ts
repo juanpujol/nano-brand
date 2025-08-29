@@ -7,12 +7,12 @@ export const actions: Actions = {
 		const email = formData.get('email') as string;
 
 		if (!email || typeof email !== 'string') {
-			return fail(400, { error: 'Email é obrigatório' });
+			return fail(400, { error: 'Email is required' });
 		}
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(email)) {
-			return fail(400, { error: 'Email inválido' });
+			return fail(400, { error: 'Invalid email' });
 		}
 
 		const supabase = locals.supabase;
@@ -27,7 +27,7 @@ export const actions: Actions = {
 
 			if (error) {
 				console.error('Login error:', error);
-				return fail(500, { error: 'Erro ao enviar código de verificação' });
+				return fail(500, { error: 'Error sending verification code' });
 			}
 
 			// Store email in cookie for verify page
@@ -40,7 +40,7 @@ export const actions: Actions = {
 			});
 		} catch (error) {
 			console.error('Unexpected error:', error);
-			return fail(500, { error: 'Erro interno do servidor' });
+			return fail(500, { error: 'Internal server error' });
 		}
 
 		// Redirect after successful completion

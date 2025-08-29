@@ -21,8 +21,8 @@
 </script>
 
 <AuthLayout
-	title="Crie sua organização"
-	description="Vamos configurar seu espaço de trabalho para começar com o Laiki"
+	title="Create your organization"
+	description="Let's set up your workspace to get started with NanoBrand"
 	iconGradient="from-purple-600 to-pink-600"
 	backgroundGradient="from-purple-200 via-white to-pink-200"
 	titleTestId="org-setup-title"
@@ -57,13 +57,13 @@
 	>
 		<div class="space-y-2">
 			<Label for="organizationName" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Nome da organização
+				Organization name
 			</Label>
 			<Input
 				id="organizationName"
 				name="organizationName"
 				type="text"
-				placeholder="Minha Empresa Ltda."
+				placeholder="My Company Inc."
 				bind:value={organizationName}
 				required
 				class="h-12 text-base"
@@ -72,13 +72,13 @@
 				data-testid="org-name-input"
 			/>
 			<p class="text-xs text-gray-500 dark:text-gray-400">
-				Este será o nome do seu espaço de trabalho e pode ser alterado posteriormente
+				This will be your workspace name and can be changed later
 			</p>
 		</div>
 
 		<div class="space-y-2">
 			<Label for="industry" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Setor/Categoria *
+				Industry/Category *
 			</Label>
 			<Select.Root
 				type="single"
@@ -86,7 +86,7 @@
 				disabled={loading}
 			>
 				<Select.Trigger class="min-h-12 w-full">
-					{industry ? INDUSTRY_OPTIONS.find(opt => opt.value === industry)?.label : 'Selecione o setor da sua empresa'}
+					{industry ? INDUSTRY_OPTIONS.find(opt => opt.value === industry)?.label : 'Select your company industry'}
 				</Select.Trigger>
 				<Select.Content>
 					{#each INDUSTRY_OPTIONS as option (option.value)}
@@ -99,12 +99,12 @@
 
 		<div class="space-y-2">
 			<Label for="description" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				O que vocês fazem *
+				What do you do *
 			</Label>
 			<Textarea
 				id="description"
 				name="description"
-				placeholder="Descreva brevemente o que sua empresa faz..."
+				placeholder="Briefly describe what your company does..."
 				bind:value={description}
 				class="text-base resize-none"
 				disabled={loading}
@@ -113,13 +113,13 @@
 				required
 			/>
 			<p class="text-xs text-gray-500 dark:text-gray-400">
-				{description.length}/140 caracteres
+				{description.length}/140 characters
 			</p>
 		</div>
 
 		<div class="space-y-3">
 			<Label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Tom da marca (escolha 1-3) *
+				Brand voice (choose 1-3) *
 			</Label>
 			<div class="flex flex-wrap gap-2">
 				{#each BRAND_VOICE_OPTIONS as option (option.value)}
@@ -151,7 +151,7 @@
 
 		<div class="space-y-3">
 			<Label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Política de logo *
+				Logo policy *
 			</Label>
 			<div class="space-y-2">
 				{#each LOGO_POLICY_OPTIONS as option (option.value)}
@@ -186,10 +186,10 @@
 						<div
 							class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
 						></div>
-						Criando organização...
+						Creating organization...
 					</div>
 				{:else}
-					Criar organização
+					Create organization
 				{/if}
 			</Button>
 		</div>
@@ -203,7 +203,7 @@
 				</div>
 				<div class="relative flex justify-center text-xs uppercase">
 					<span class="bg-white px-2 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-						O que você terá
+						What you'll get
 					</span>
 				</div>
 			</div>
@@ -228,7 +228,7 @@
 							/>
 						</svg>
 					</div>
-					<span>Workspace colaborativo para sua equipe</span>
+					<span>Collaborative workspace for your team</span>
 				</div>
 				<div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
 					<div
@@ -249,7 +249,7 @@
 							/>
 						</svg>
 					</div>
-					<span>Gerenciamento de projetos e tarefas</span>
+					<span>Project and task management</span>
 				</div>
 				<div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
 					<div
@@ -270,7 +270,7 @@
 							/>
 						</svg>
 					</div>
-					<span>Ferramentas de comunicação integradas</span>
+					<span>Integrated communication tools</span>
 				</div>
 			</div>
 		</div>

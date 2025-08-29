@@ -12,17 +12,17 @@ import {
 export const createOrganizationSchema = object({
 	organizationName: pipe(
 		string(),
-		minLength(1, 'Nome da organização é obrigatório'),
-		maxLength(50, 'Nome da organização deve ter no máximo 50 caracteres')
+		minLength(1, 'Organization name is required'),
+		maxLength(50, 'Organization name must be at most 50 characters')
 	),
-	industry: pipe(string(), minLength(1, 'Setor é obrigatório')),
+	industry: pipe(string(), minLength(1, 'Industry is required')),
 	description: pipe(
 		string(),
-		minLength(1, 'Descrição é obrigatória'),
-		maxLength(140, 'Descrição deve ter no máximo 140 caracteres')
+		minLength(1, 'Description is required'),
+		maxLength(140, 'Description must be at most 140 characters')
 	),
-	brandVoice: pipe(array(string()), minLength(1, 'Selecione pelo menos um tom da marca')),
-	logoPolicy: pipe(string(), minLength(1, 'Política de logo é obrigatória'))
+	brandVoice: pipe(array(string()), minLength(1, 'Please select at least one brand voice')),
+	logoPolicy: pipe(string(), minLength(1, 'Logo policy is required'))
 });
 
 export type CreateOrganizationInput = InferInput<typeof createOrganizationSchema>;

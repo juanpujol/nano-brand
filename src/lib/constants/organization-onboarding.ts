@@ -1,45 +1,45 @@
 export const INDUSTRY_OPTIONS = [
-	{ value: 'technology', label: 'Tecnologia' },
-	{ value: 'healthcare', label: 'Saúde' },
-	{ value: 'finance', label: 'Finanças' },
-	{ value: 'education', label: 'Educação' },
-	{ value: 'retail', label: 'Varejo' },
-	{ value: 'manufacturing', label: 'Manufatura' },
-	{ value: 'construction', label: 'Construção' },
-	{ value: 'professional_services', label: 'Serviços Profissionais' },
-	{ value: 'marketing_advertising', label: 'Marketing e Publicidade' },
-	{ value: 'food_beverage', label: 'Alimentação e Bebidas' },
-	{ value: 'automotive', label: 'Automotivo' },
-	{ value: 'real_estate', label: 'Imobiliário' },
-	{ value: 'travel_hospitality', label: 'Turismo e Hospitalidade' },
-	{ value: 'entertainment', label: 'Entretenimento' },
-	{ value: 'fitness_wellness', label: 'Fitness e Bem-estar' },
-	{ value: 'legal', label: 'Jurídico' },
-	{ value: 'consulting', label: 'Consultoria' },
+	{ value: 'technology', label: 'Technology' },
+	{ value: 'healthcare', label: 'Healthcare' },
+	{ value: 'finance', label: 'Finance' },
+	{ value: 'education', label: 'Education' },
+	{ value: 'retail', label: 'Retail' },
+	{ value: 'manufacturing', label: 'Manufacturing' },
+	{ value: 'construction', label: 'Construction' },
+	{ value: 'professional_services', label: 'Professional Services' },
+	{ value: 'marketing_advertising', label: 'Marketing & Advertising' },
+	{ value: 'food_beverage', label: 'Food & Beverage' },
+	{ value: 'automotive', label: 'Automotive' },
+	{ value: 'real_estate', label: 'Real Estate' },
+	{ value: 'travel_hospitality', label: 'Travel & Hospitality' },
+	{ value: 'entertainment', label: 'Entertainment' },
+	{ value: 'fitness_wellness', label: 'Fitness & Wellness' },
+	{ value: 'legal', label: 'Legal' },
+	{ value: 'consulting', label: 'Consulting' },
 	{ value: 'ecommerce', label: 'E-commerce' },
-	{ value: 'non_profit', label: 'Organização sem fins lucrativos' },
-	{ value: 'other', label: 'Outro' }
+	{ value: 'non_profit', label: 'Non-profit Organization' },
+	{ value: 'other', label: 'Other' }
 ] as const;
 
 export const BRAND_VOICE_OPTIONS = [
 	{ value: 'premium', label: 'Premium' },
-	{ value: 'playful', label: 'Brincalhão' },
-	{ value: 'bold', label: 'Ousado' },
-	{ value: 'technical', label: 'Técnico' },
-	{ value: 'friendly', label: 'Amigável' },
-	{ value: 'professional', label: 'Profissional' },
-	{ value: 'creative', label: 'Criativo' },
-	{ value: 'minimalist', label: 'Minimalista' },
-	{ value: 'energetic', label: 'Energético' },
-	{ value: 'trustworthy', label: 'Confiável' },
-	{ value: 'innovative', label: 'Inovador' },
-	{ value: 'approachable', label: 'Acessível' }
+	{ value: 'playful', label: 'Playful' },
+	{ value: 'bold', label: 'Bold' },
+	{ value: 'technical', label: 'Technical' },
+	{ value: 'friendly', label: 'Friendly' },
+	{ value: 'professional', label: 'Professional' },
+	{ value: 'creative', label: 'Creative' },
+	{ value: 'minimalist', label: 'Minimalist' },
+	{ value: 'energetic', label: 'Energetic' },
+	{ value: 'trustworthy', label: 'Trustworthy' },
+	{ value: 'innovative', label: 'Innovative' },
+	{ value: 'approachable', label: 'Approachable' }
 ] as const;
 
 export const LOGO_POLICY_OPTIONS = [
-	{ value: 'always', label: 'Sempre' },
-	{ value: 'usually', label: 'Geralmente' },
-	{ value: 'rarely', label: 'Raramente' }
+	{ value: 'always', label: 'Always' },
+	{ value: 'usually', label: 'Usually' },
+	{ value: 'rarely', label: 'Rarely' }
 ] as const;
 
 export type IndustryValue = typeof INDUSTRY_OPTIONS[number]['value'];

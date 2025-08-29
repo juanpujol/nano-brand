@@ -22,15 +22,15 @@ export const actions: Actions = {
 		const email = formData.get('email') as string;
 
 		if (!token || typeof token !== 'string') {
-			return fail(400, { error: 'Código é obrigatório' });
+			return fail(400, { error: 'Code is required' });
 		}
 
 		if (token.length !== 6) {
-			return fail(400, { error: 'Código deve ter 6 dígitos' });
+			return fail(400, { error: 'Code must be 6 digits' });
 		}
 
 		if (!email || typeof email !== 'string') {
-			return fail(400, { error: 'Email não encontrado' });
+			return fail(400, { error: 'Email not found' });
 		}
 
 		const supabase = locals.supabase;
@@ -46,10 +46,10 @@ export const actions: Actions = {
 				console.error('OTP verification error:', error);
 
 				if (error.message.includes('invalid') || error.message.includes('expired')) {
-					return fail(400, { error: 'Código inválido ou expirado' });
+					return fail(400, { error: 'Invalid or expired code' });
 				}
 
-				return fail(500, { error: 'Erro ao verificar código' });
+				return fail(500, { error: 'Error verifying code' });
 			}
 
 			// Clear the auth email cookie
@@ -59,7 +59,7 @@ export const actions: Actions = {
 			});
 		} catch (error) {
 			console.error('Unexpected error:', error);
-			return fail(500, { error: 'Erro interno do servidor' });
+			return fail(500, { error: 'Internal server error' });
 		}
 
 		// Redirect to new organization page for new users

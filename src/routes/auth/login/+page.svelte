@@ -11,8 +11,8 @@
 </script>
 
 <AuthLayout
-	title="Bem-vindo ao Laiki"
-	description="Digite seu e-mail para começar"
+	title="Welcome to NanoBrand"
+	description="Enter your email to get started"
 	iconGradient="from-blue-600 to-purple-600"
 	backgroundGradient="from-blue-200 via-white to-purple-200"
 	titleTestId="login-title"
@@ -24,7 +24,7 @@
 			stroke="currentColor"
 			viewBox="0 0 24 24"
 			role="img"
-			aria-label="Laiki logo"
+			aria-label="NanoBrand logo"
 		>
 			<path
 				stroke-linecap="round"
@@ -48,13 +48,13 @@
 	>
 		<div class="space-y-2">
 			<Label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-				Endereço de e-mail
+				Email address
 			</Label>
 			<Input
 				id="email"
 				name="email"
 				type="email"
-				placeholder="voce@exemplo.com"
+				placeholder="you@example.com"
 				required
 				class="h-12 text-base"
 				disabled={loading}
@@ -77,10 +77,10 @@
 					<div
 						class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
 					></div>
-					Enviando código...
+					Sending code...
 				</div>
 			{:else}
-				Enviar código de verificação
+				Send verification code
 			{/if}
 		</Button>
 	</form>
@@ -88,7 +88,7 @@
 	{#snippet footer()}
 		<div class="text-center">
 			<p class="text-xs text-gray-500 dark:text-gray-400">
-				Ao continuar, você concorda com nossos Termos de Serviço e Política de Privacidade
+				By continuing, you agree to our Terms of Service and Privacy Policy
 			</p>
 		</div>
 	{/snippet}
@@ -96,7 +96,7 @@
 	{#snippet outsideContent()}
 		<div class="text-center">
 			<p class="text-sm text-gray-600 dark:text-gray-400">
-				Enviaremos um código de verificação para você entrar com segurança
+				We'll send you a verification code to sign in securely
 			</p>
 		</div>
 	{/snippet}

@@ -26,7 +26,7 @@ export const actions: Actions = {
 		const { user } = await safeGetSession();
 
 		if (!user) {
-			return fail(401, { error: 'Usuário não autenticado' });
+			return fail(401, { error: 'User not authenticated' });
 		}
 
 		const data = await request.formData();
@@ -90,7 +90,7 @@ export const actions: Actions = {
 		} catch (error) {
 			console.error('Error creating organization:', error);
 			return fail(500, {
-				error: 'Erro ao criar organização. Tente novamente.'
+				error: 'Error creating organization. Please try again.'
 			});
 		}
 
