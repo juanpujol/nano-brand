@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Confirmação de Alteração de Email - Laiki</title>
+	</head>
+	<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333">
+		<div style="max-width: 600px; margin: 0 auto; padding: 20px">
+			<h2 style="color: #333; margin-bottom: 20px">Confirme a alteração do seu email</h2>
+
+			<p>Seu código de confirmação é:</p>
+
+			<div
+				style="
+					background: #f5f5f5;
+					padding: 20px;
+					border-radius: 8px;
+					text-align: center;
+					margin: 20px 0;
+				"
+			>
+				<h1
+					style="
+						font-family: monospace;
+						font-size: 32px;
+						color: #333;
+						letter-spacing: 5px;
+						margin: 0;
+					"
+				>
+					{{ .Token }}
+				</h1>
+			</div>
+
+			<p style="color: #666; font-size: 14px">Este código expira em 60 minutos.</p>
+
+			<p style="margin-top: 30px">Suporte Laiki.</p>
+		</div>
+	</body>
+</html>
