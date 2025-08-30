@@ -22,10 +22,10 @@
 	// Form state
 	let prompt = $state('');
 	let loading = $state(false);
-	
+
 	// Image generation options
 	let includeLogo = $state(true);
-	let includeReferenceImages = $state(false);
+	let includeReferenceImages = $state(true);
 	let aspectRatio = $state('1:1');
 	let negativePrompt = $state('');
 	let showAdvanced = $state(false);
@@ -49,7 +49,7 @@
 		prompt = '';
 		negativePrompt = '';
 		includeLogo = true;
-		includeReferenceImages = false;
+		includeReferenceImages = true;
 		aspectRatio = '1:1';
 		showAdvanced = false;
 		open = false;
@@ -237,7 +237,7 @@
 			</div>
 
 			<!-- Suggested Prompts -->
-			{#if suggestedPrompts.length > 0}
+			{#if suggestedPrompts.length > 0 && false}
 				<div class="space-y-3">
 					<Label class="text-sm font-medium">Suggested Prompts</Label>
 					<div class="space-y-2">
