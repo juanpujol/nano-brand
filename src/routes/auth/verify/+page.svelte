@@ -24,7 +24,7 @@
 	<div class="absolute top-6 right-6 z-10">
 		<ThemeToggle />
 	</div>
-	
+
 	<div class="flex flex-col gap-4 p-6 md:p-10">
 		<div class="flex justify-center gap-2 md:justify-start">
 			<button
@@ -77,22 +77,11 @@
 					</div>
 					<div class="grid gap-6">
 						<input type="hidden" name="email" value={data.email} />
-						
+
 						<div class="flex justify-center">
 							<InputOTP.Root
 								maxlength={6}
 								bind:value={otp}
-								onValueChange={(value) => {
-									otp = value;
-									if (value.length === 6) {
-										setTimeout(() => {
-											const form = document.querySelector('form');
-											if (form && otp.length === 6) {
-												form.requestSubmit();
-											}
-										}, 100);
-									}
-								}}
 								disabled={loading}
 								data-testid="otp-input"
 							>
@@ -129,7 +118,7 @@
 						</Button>
 					</div>
 					<div class="text-center text-sm text-muted-foreground">
-						Didn't receive the code? 
+						Didn't receive the code?
 						<a href="/auth/login" class="underline underline-offset-4 hover:text-foreground" data-testid="resend-link">
 							Resend code
 						</a>

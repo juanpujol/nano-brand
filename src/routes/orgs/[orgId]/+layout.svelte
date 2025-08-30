@@ -102,191 +102,44 @@
 	});
 </script>
 
-<Sidebar.Provider>
-	<OrgSidebar
-		user={data.user}
-		memberships={data.memberships}
-		currentOrganization={data.currentOrganization}
-	/>
-	<Sidebar.Inset>
-		<header
-			class={cn(
-				'sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 bg-background transition-all duration-200',
-				showHeaderBorder && 'border-b border-border'
-			)}
-		>
-			<div class="flex items-center gap-2 px-4">
-				<Sidebar.Trigger class="-ml-1" />
-				<Separator.Root orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-				<Breadcrumb.Root>
-					<Breadcrumb.List>
-						<!-- Desktop view: Full breadcrumb -->
-						<div class="hidden md:contents">
-							<Breadcrumb.Item>
-								<Breadcrumb.Link href="/orgs/{data.currentOrganization?.id}">
-									{data.currentOrganization?.name || 'Organization'}
-								</Breadcrumb.Link>
-							</Breadcrumb.Item>
-							<Breadcrumb.Separator />
-
-							{#if currentPageInfo().greatGrandparentTitle || (currentPageInfo().grandparentTitle && currentPageInfo().parentTitle)}
-								<!-- Compact view: always show max 3 steps with dropdown in middle -->
-								{#if currentPageInfo().greatGrandparentTitle}
-									<!-- 4+ levels: org > ... > parent > current -->
-									<Breadcrumb.Item>
-										<DropdownMenu.Root>
-											<DropdownMenu.Trigger class="flex items-center gap-1">
-												<Breadcrumb.Ellipsis class="h-4 w-4" />
-												<span class="sr-only">Toggle menu</span>
-											</DropdownMenu.Trigger>
-											<DropdownMenu.Content align="start">
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().greatGrandparentHref} class="block w-full">
-														{currentPageInfo().greatGrandparentTitle}
-													</a>
-												</DropdownMenu.Item>
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().grandparentHref} class="block w-full">
-														{currentPageInfo().grandparentTitle}
-													</a>
-												</DropdownMenu.Item>
-											</DropdownMenu.Content>
-										</DropdownMenu.Root>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-									<Breadcrumb.Item>
-										<Breadcrumb.Link href={currentPageInfo().parentHref}>
-											{currentPageInfo().parentTitle}
-										</Breadcrumb.Link>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-								{:else if currentPageInfo().grandparentTitle && currentPageInfo().parentTitle}
-									<!-- 3 levels: org > grandparent > parent > current, show grandparent in dropdown -->
-									<Breadcrumb.Item>
-										<DropdownMenu.Root>
-											<DropdownMenu.Trigger class="flex items-center gap-1">
-												<Breadcrumb.Ellipsis class="h-4 w-4" />
-												<span class="sr-only">Toggle menu</span>
-											</DropdownMenu.Trigger>
-											<DropdownMenu.Content align="start">
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().grandparentHref} class="block w-full">
-														{currentPageInfo().grandparentTitle}
-													</a>
-												</DropdownMenu.Item>
-											</DropdownMenu.Content>
-										</DropdownMenu.Root>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-									<Breadcrumb.Item>
-										<Breadcrumb.Link href={currentPageInfo().parentHref}>
-											{currentPageInfo().parentTitle}
-										</Breadcrumb.Link>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-								{/if}
-							{:else}
-								<!-- Standard view for 2 or fewer additional levels -->
-								{#if currentPageInfo().grandparentTitle && currentPageInfo().grandparentHref}
-									<Breadcrumb.Item>
-										<Breadcrumb.Link href={currentPageInfo().grandparentHref}>
-											{currentPageInfo().grandparentTitle}
-										</Breadcrumb.Link>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-								{/if}
-								{#if currentPageInfo().parentTitle && currentPageInfo().parentHref}
-									<Breadcrumb.Item>
-										<Breadcrumb.Link href={currentPageInfo().parentHref}>
-											{currentPageInfo().parentTitle}
-										</Breadcrumb.Link>
-									</Breadcrumb.Item>
-									<Breadcrumb.Separator />
-								{/if}
-							{/if}
-						</div>
-
-						<!-- Mobile view: Only dropdown + current page -->
-						<div class="contents md:hidden">
-							{#if currentPageInfo().parentTitle || currentPageInfo().grandparentTitle || currentPageInfo().greatGrandparentTitle}
-								<Breadcrumb.Item>
-									<DropdownMenu.Root>
-										<DropdownMenu.Trigger class="flex items-center gap-1">
-											<Breadcrumb.Ellipsis class="h-4 w-4" />
-											<span class="sr-only">Toggle menu</span>
-										</DropdownMenu.Trigger>
-										<DropdownMenu.Content align="start">
-											<DropdownMenu.Item>
-												<a href="/orgs/{data.currentOrganization?.id}" class="block w-full">
-													{data.currentOrganization?.name || 'Organization'}
-												</a>
-											</DropdownMenu.Item>
-											{#if currentPageInfo().greatGrandparentTitle}
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().greatGrandparentHref} class="block w-full">
-														{currentPageInfo().greatGrandparentTitle}
-													</a>
-												</DropdownMenu.Item>
-											{/if}
-											{#if currentPageInfo().grandparentTitle}
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().grandparentHref} class="block w-full">
-														{currentPageInfo().grandparentTitle}
-													</a>
-												</DropdownMenu.Item>
-											{/if}
-											{#if currentPageInfo().parentTitle}
-												<DropdownMenu.Item>
-													<a href={currentPageInfo().parentHref} class="block w-full">
-														{currentPageInfo().parentTitle}
-													</a>
-												</DropdownMenu.Item>
-											{/if}
-										</DropdownMenu.Content>
-									</DropdownMenu.Root>
-								</Breadcrumb.Item>
-								<Breadcrumb.Separator />
-							{/if}
-						</div>
-
-						<Breadcrumb.Item>
-							<Breadcrumb.Page>{currentPageInfo().title}</Breadcrumb.Page>
-						</Breadcrumb.Item>
-					</Breadcrumb.List>
-				</Breadcrumb.Root>
-			</div>
-		</header>
-
-		<div class="flex flex-1 flex-col pt-0">
-			<svelte:boundary>
-				{@render children?.()}
-
-				{#snippet pending()}
-					<div class="flex h-64 items-center justify-center">
-						<div class="text-center">
-							<div
-								class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"
-							></div>
-							<p class="text-muted-foreground">Carregando...</p>
-						</div>
-					</div>
-				{/snippet}
-			</svelte:boundary>
+<div>
+	<header class="flex items-center justify-between border-b">
+		<div class="w-full max-w-screen-xl mx-auto flex items-center justify-between p-4">
+			<a href="/" class="flex items-center gap-2 font-medium">
+				<div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+					<svg
+						class="size-4"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width={2}
+							d="M13 10V3L4 14h7v7l9-11h-7z"
+						/>
+					</svg>
+				</div>
+				NanoBrand
+			</a>
 		</div>
-	</Sidebar.Inset>
-</Sidebar.Provider>
+	</header>
 
-<!-- <div class="flex flex-1 flex-col pt-0">
 	<svelte:boundary>
-		{@render children?.()}
+		<main>
+			<div class="w-full max-w-screen-xl mx-auto p-4">
+				{@render children?.()}
+			</div>
+		</main>
 
 		{#snippet pending()}
 			<div class="flex h-64 items-center justify-center">
 				<div class="text-center">
 					<div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-					<p class="text-muted-foreground">Carregando...</p>
+					<p class="text-muted-foreground">Loading...</p>
 				</div>
 			</div>
 		{/snippet}
 	</svelte:boundary>
-</div> -->
+</div>

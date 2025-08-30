@@ -11,7 +11,7 @@
 	import type ColorThief from 'colorthief';
 	import { extractColorsFromImage } from './utils/color-extraction';
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	 
 	let { data }: { data: PageData } = $props();
 
 	let files = $state<FileList>();
@@ -266,7 +266,18 @@
 					</Card.Root>
 
 					<!-- Action Buttons -->
-					<div class="flex gap-3 justify-end">
+					<div class="flex gap-3 justify-between">
+						<form method="POST" action="?/skip">
+							<input type="hidden" name="orgId" value={data.orgId} />
+							<Button
+								type="submit"
+								variant="outline"
+								disabled={loading}
+								data-testid="skip-button"
+							>
+								Skip for now
+							</Button>
+						</form>
 						<form
 							method="POST"
 							action="?/continue"

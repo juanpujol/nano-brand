@@ -1,18 +1,18 @@
-import type { Actions, PageServerLoad } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
-import { safeParse } from 'valibot';
-import { createOrganizationSchema } from '$lib/schemas/organization';
+import type { Actions, PageServerLoad } from "./$types";
+import { fail, redirect } from "@sveltejs/kit";
+import { safeParse } from "valibot";
+import { createOrganizationSchema } from "$lib/schemas/organization";
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { user } = await safeGetSession();
 
 	// If not authenticated, redirect to login
 	if (!user) {
-		redirect(303, '/auth/login');
+		redirect(303, "/auth/login");
 	}
 
 	return {
-		user
+		user,
 	};
 };
 
@@ -21,20 +21,20 @@ export const actions: Actions = {
 		const { user } = await safeGetSession();
 
 		if (!user) {
-			return fail(401, { error: 'User not authenticated' });
+			return fail(401, { error: "User not authenticated" });
 		}
 
 		const data = await request.formData();
 		const formData = {
-			organizationName: data.get('organizationName') as string,
-			industry: data.get('industry') as string || undefined,
-			description: data.get('description') as string || undefined,
-			brandVoice: data.getAll('brandVoice') as string[] || undefined,
-			logoPolicy: data.get('logoPolicy') as string || undefined
+			organizationName: data.get("organizationName") as string,
+			industry: data.get("industry") as string || undefined,
+			description: data.get("description") as string || undefined,
+			brandVoice: data.getAll("brandVoice") as string[] || undefined,
+			logoPolicy: data.get("logoPolicy") as string || undefined,
 		};
 
 		const result = safeParse(createOrganizationSchema, formData);
-		
+
 		if (!result.success) {
 			const firstError = result.issues[0];
 			return fail(400, { error: firstError.message });
@@ -42,14 +42,18 @@ export const actions: Actions = {
 
 		let orgId: string;
 
-		const { organizationName, industry, description, brandVoice, logoPolicy } = result.output;
+		const { organizationName, industry, description, brandVoice, logoPolicy } =
+			result.output;
 
 		try {
 			// Create organization with admin membership using database function
-			const { data: orgResult, error: orgError } = await supabase.rpc('create_organization_with_admin', {
-				org_name: organizationName.trim(),
-				user_id: user.id
-			});
+			const { data: orgResult, error: orgError } = await supabase.rpc(
+				"create_organization_with_admin",
+				{
+					org_name: organizationName.trim(),
+					user_id: user.id,
+				},
+			);
 
 			if (orgError) throw orgError;
 
@@ -58,38 +62,28 @@ export const actions: Actions = {
 				const updateData: Record<string, string | string[]> = {};
 				if (industry) updateData.industry = industry;
 				if (description) updateData.description = description;
-				if (brandVoice && brandVoice.length > 0) updateData.brand_voice = brandVoice;
+				if (brandVoice && brandVoice.length > 0) {
+					updateData.brand_voice = brandVoice;
+				}
 				if (logoPolicy) updateData.logo_policy = logoPolicy;
 
 				const { error: updateError } = await supabase
-					.from('organizations')
+					.from("organizations")
 					.update(updateData)
-					.eq('id', orgResult);
+					.eq("id", orgResult);
 
 				if (updateError) throw updateError;
 			}
 
-			// Create default dashboard for the new organization
-			const { error: dashboardError } = await supabase.from('dashboards').insert({
-				name: 'Relatório geral',
-				description: 'Seu primeiro relatório pronto para personalizar.',
-				organization_id: orgResult,
-				owner_id: user.id,
-				is_private: false,
-				period_filter: { type: 'relative', value: 'thisMonth' }
-			});
-
-			if (dashboardError) throw dashboardError;
-
 			orgId = orgResult;
 		} catch (error) {
-			console.error('Error creating organization:', error);
+			console.error("Error creating organization:", error);
 			return fail(500, {
-				error: 'Error creating organization. Please try again.'
+				error: "Error creating organization. Please try again.",
 			});
 		}
 
 		// Redirect to logo upload page after successful completion
 		redirect(303, `/setup/logo?org=${orgId}`);
-	}
+	},
 };

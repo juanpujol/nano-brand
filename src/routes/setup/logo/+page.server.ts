@@ -28,7 +28,7 @@ export const actions: Actions = {
 	skip: async ({ url }) => {
 		const orgId = url.searchParams.get("org");
 		if (orgId) {
-			redirect(303, `/orgs/${orgId}`);
+			redirect(303, `/setup/product?org=${orgId}`);
 		} else {
 			redirect(303, "/orgs");
 		}
@@ -48,7 +48,7 @@ export const actions: Actions = {
 
 		// Skip upload if no logo file
 		if (!logoFile || logoFile.size === 0) {
-			redirect(303, `/orgs/${orgId}`);
+			redirect(303, `/setup/product?org=${orgId}`);
 		}
 
 		try {
@@ -98,6 +98,6 @@ export const actions: Actions = {
 			return fail(500, { error: "An error occurred during logo upload" });
 		}
 
-		redirect(303, `/orgs/${orgId}`);
+		redirect(303, `/setup/product?org=${orgId}`);
 	},
 };
