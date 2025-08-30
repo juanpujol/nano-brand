@@ -17,6 +17,47 @@ import {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 /**
+ * Enhance user prompt using Gemini text generation
+ */
+async function enhancePrompt(userPrompt: string): Promise<string> {
+	try {
+		const model = genAI.getGenerativeModel({
+			model: "gemini-2.5-flash",
+		});
+
+		const enhancementPrompt = `Transform the description below into a 10/10 technical prompt for AI image generation.
+
+<description>
+${userPrompt}
+</description>
+
+Rules:
+- Make it detailed and specific
+- Include lighting, composition, and style details
+- Keep the core intent but make it more visual and descriptive
+- Focus on what should be visible in the image
+- Use professional photography and art terminology
+- Maximum 200 words
+
+Enhanced prompt:`;
+
+		const result = await model.generateContent(enhancementPrompt);
+		const response = result.response;
+		const enhancedText = response.text();
+
+		if (!enhancedText) {
+			console.warn("No enhanced prompt received, using original");
+			return userPrompt;
+		}
+
+		return enhancedText.trim();
+	} catch (err) {
+		console.error("Failed to enhance prompt:", err);
+		return userPrompt; // Fallback to original prompt
+	}
+}
+
+/**
  * Generate a new image from a text prompt using Gemini
  */
 export const generateImage = command(
@@ -43,6 +84,11 @@ export const generateImage = command(
 				includeLogo: false,
 				includeReferenceImages: false,
 			});
+
+			// Enhance the user prompt before using it
+			const enhancedPrompt = await enhancePrompt(prompt);
+			console.log("Original prompt:", prompt);
+			console.log("Enhanced prompt:", enhancedPrompt);
 
 			// Prepare content array for Gemini API
 			const contentParts:
@@ -167,7 +213,7 @@ export const generateImage = command(
 			}
 
 			// Build the comprehensive prompt with system prompt and user request
-			let fullPrompt = systemPrompt + "\n\n## USER REQUEST\n" + prompt;
+			let fullPrompt = systemPrompt + "\n\n## USER REQUEST\n" + enhancedPrompt;
 
 			// Add context about included images
 			if (logoBase64) {
