@@ -81,3 +81,19 @@ export interface Product {
 	created_at: string;
 	updated_at: string;
 }
+
+// Product Images schema and types
+export const fetchProductImagesSchema = object({
+	productId: string(),
+	organizationId: string()
+});
+
+export interface ProductImage {
+	id: string;
+	product_id: string;
+	path: string;
+	display_order: number;
+	created_at: string;
+}
+
+export type FetchProductImagesParams = InferInput<typeof fetchProductImagesSchema>;

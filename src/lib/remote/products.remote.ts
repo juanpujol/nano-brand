@@ -5,7 +5,9 @@ import {
 	createProductRemoteSchema,
 	updateProductRemoteSchema,
 	deleteProductSchema,
-	type Product
+	fetchProductImagesSchema,
+	type Product,
+	type ProductImage
 } from '$lib/schemas/product';
 
 /**
@@ -227,3 +229,49 @@ export const deleteProduct = command(deleteProductSchema, async ({ productId, or
 		throw err instanceof Error ? err : new Error('Internal server error');
 	}
 });
+
+/**
+ * Fetches all generated images for a product.
+ */
+export const fetchProductImages = query(
+	fetchProductImagesSchema,
+	async ({ productId, organizationId }) => {
+		try {
+			const { locals } = getRequestEvent();
+			const supabase = locals.supabase;
+
+			// First verify the product exists and belongs to the organization
+			const { data: product, error: productError } = await supabase
+				.from('products')
+				.select('id')
+				.eq('id', productId)
+				.eq('organization_id', organizationId)
+				.single();
+
+			if (productError) {
+				if (productError.code === 'PGRST116') {
+					throw new Error('Product not found');
+				}
+				console.error('Error verifying product:', productError);
+				throw new Error('Error loading product');
+			}
+
+			// Fetch product images ordered by display_order
+			const { data: images, error } = await supabase
+				.from('product_images')
+				.select('*')
+				.eq('product_id', productId)
+				.order('display_order', { ascending: true });
+
+			if (error) {
+				console.error('Error fetching product images:', error);
+				throw new Error('Error loading product images');
+			}
+
+			return (images || []) as ProductImage[];
+		} catch (err) {
+			console.error('Unexpected error in fetchProductImages:', err);
+			throw err instanceof Error ? err : new Error('Internal server error');
+		}
+	}
+);

@@ -104,19 +104,25 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 			{#each data.products as product (product.id)}
 				<Card.Root class="group overflow-hidden transition-shadow hover:shadow-lg py-0 gap-0">
-					<div class="aspect-square relative overflow-hidden bg-muted">
-						{#if product.reference_images && product.reference_images.length > 0}
-							<img
-								src={`${PUBLIC_STORAGE_URL}/${product.reference_images[0]}`}
-								alt={product.name}
-								class="w-full h-full object-cover transition-transform group-hover:scale-105"
-							/>
-						{:else}
-							<div class="flex items-center justify-center h-full">
-								<PackageIcon class="h-12 w-12 text-muted-foreground" />
-							</div>
-						{/if}
-					</div>
+					<a 
+						href="/orgs/{page.params.orgId}/products/{product.id}/gallery" 
+						class="block"
+						aria-label="View {product.name} gallery"
+					>
+						<div class="aspect-square relative overflow-hidden bg-muted">
+							{#if product.reference_images && product.reference_images.length > 0}
+								<img
+									src={`${PUBLIC_STORAGE_URL}/${product.reference_images[0]}`}
+									alt={product.name}
+									class="w-full h-full object-cover transition-transform group-hover:scale-105"
+								/>
+							{:else}
+								<div class="flex items-center justify-center h-full">
+									<PackageIcon class="h-12 w-12 text-muted-foreground" />
+								</div>
+							{/if}
+						</div>
+					</a>
 					<Card.Content class="p-4">
 						<h3 class="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h3>
 						{#if product.description}
