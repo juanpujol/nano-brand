@@ -1,10 +1,18 @@
 <script lang="ts">
-	let { children } = $props();
+	import ProfileMenu from '$lib/components/layout/profile-menu/profile-menu.svelte';
+	import type { LayoutData } from './$types';
+
+	interface Props {
+		children: import('svelte').Snippet;
+		data: LayoutData;
+	}
+
+	let { children, data }: Props = $props();
 </script>
 
 <div>
 	<header class="flex items-center justify-between border-b">
-		<div class="w-full max-w-screen-xl mx-auto flex items-center justify-between p-4">
+		<div class="w-full max-w-screen-xl mx-auto flex items-center justify-between p-4 py-2">
 			<a href="/" class="flex items-center gap-2 font-medium">
 				<div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
 					<svg
@@ -23,6 +31,9 @@
 				</div>
 				NanoBrand
 			</a>
+
+			<!-- Profile Menu -->
+			<ProfileMenu user={data.user} />
 		</div>
 	</header>
 

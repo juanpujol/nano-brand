@@ -6,6 +6,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import * as InputOTP from '$lib/components/ui/input-otp';
+	import Spinner from './spinner.svelte';
 
 	interface UserAccountData {
 		name: string;
@@ -116,7 +117,7 @@
 		const codeToVerify = otpCode || emailChangeState.otpCode;
 
 		if (!codeToVerify || codeToVerify.length !== 6) {
-			throw new Error('Por favor, insira o código de 6 dígitos.');
+			throw new Error('Please enter the 6-digit code.');
 		}
 
 		isLoading = true;
@@ -142,7 +143,6 @@
 
 			await onUpdate(updatedData);
 			open = false;
-			console.log('Email atualizado com sucesso!');
 		} catch (error) {
 			console.error('Error verifying OTP:', error);
 			// Clear OTP on error
@@ -167,15 +167,15 @@
 	async function handleSubmit() {
 		// Basic validation
 		if (!formData.name.trim()) {
-			throw new Error('Por favor, insira seu nome.');
+			throw new Error('Please enter your name.');
 		}
 
 		if (!formData.email.trim()) {
-			throw new Error('Por favor, insira seu email.');
+			throw new Error('Please enter your email.');
 		}
 
 		if (!validateEmail(formData.email)) {
-			throw new Error('Por favor, insira um email válido.');
+			throw new Error('Please enter a valid email.');
 		}
 
 		// If email hasn't changed, just update name
@@ -224,10 +224,9 @@
 			if (error) throw error;
 
 			emailChangeState.resendCooldown = 60;
-			console.log('Novo código enviado!');
 		} catch (error) {
 			console.error('Error resending OTP:', error);
-			throw new Error('Erro ao reenviar código. Tente novamente.');
+			throw new Error('Error resending code. Please try again.');
 		} finally {
 			isSendingOtp = false;
 		}
@@ -246,10 +245,10 @@
 			<Dialog.Title class="flex items-center gap-2">
 				{#if emailChangeState.step === 'email'}
 					<User class="h-5 w-5" />
-					Minha conta
+					My Account
 				{:else}
 					<Shield class="h-5 w-5" />
-					Verificar email
+					Verify Email
 				{/if}
 			</Dialog.Title>
 		</Dialog.Header>
@@ -266,15 +265,15 @@
 			>
 				<!-- Name Field -->
 				<div class="space-y-2">
-					<Label for="user-name" class="text-sm font-medium">Nome completo</Label>
+					<Label for="user-name" class="text-sm font-medium">Full Name</Label>
 					<Input
 						id="user-name"
 						bind:value={formData.name}
-						placeholder="Digite seu nome completo"
+						placeholder="Enter your full name"
 						required
 						disabled={isLoading || isSendingOtp}
 					/>
-					<p class="text-xs text-muted-foreground">Este nome será exibido no sistema</p>
+					<p class="text-xs text-muted-foreground">This name will be displayed in the system</p>
 				</div>
 
 				<!-- Email Field -->
@@ -284,15 +283,15 @@
 						id="user-email"
 						type="email"
 						bind:value={formData.email}
-						placeholder="Digite seu email"
+						placeholder="Enter your email"
 						required
 						disabled={isLoading || isSendingOtp}
 					/>
 					<p class="text-xs text-muted-foreground">
 						{#if formData.email !== currentUser.email}
-							Será enviado um código de verificação para o novo email
+							A verification code will be sent to the new email
 						{:else}
-							Email usado para login e notificações
+							Email used for login and notifications
 						{/if}
 					</p>
 				</div>
@@ -301,8 +300,8 @@
 				{#if formData.email !== currentUser.email}
 					<div class="rounded-lg bg-muted p-4">
 						<p class="text-sm text-muted-foreground">
-							<strong>Importante:</strong> Você receberá um código de verificação no novo email. Digite
-							o código para confirmar a alteração.
+							<strong>Important:</strong> You will receive a verification code at the new email address. Enter
+							the code to confirm the change.
 						</p>
 					</div>
 				{/if}
@@ -316,19 +315,19 @@
 						class="flex-1"
 						disabled={isLoading || isSendingOtp}
 					>
-						Cancelar
+						Cancel
 					</Button>
 					<Button type="submit" class="flex-1" disabled={isLoading || isSendingOtp}>
 						{#if isSendingOtp}
-							Enviando código...
+							Sending code...
 						{:else if isLoading}
-							Salvando...
+							Saving...
 						{:else if formData.email !== currentUser.email}
 							<Mail class="mr-2 h-4 w-4" />
-							Enviar código
+							Send Code
 						{:else}
 							<Save class="mr-2 h-4 w-4" />
-							Salvar alterações
+							Save Changes
 						{/if}
 					</Button>
 				</div>
@@ -345,15 +344,15 @@
 			>
 				<!-- OTP Info -->
 				<div class="space-y-2 text-center">
-					<p class="text-sm text-muted-foreground">Enviamos um código de 6 dígitos para:</p>
+					<p class="text-sm text-muted-foreground">We sent a 6-digit code to:</p>
 					<p class="font-medium">{emailChangeState.pendingEmail}</p>
 				</div>
 
 				<!-- OTP Input -->
 				<div class="space-y-2">
-					<Label for="otp-input" class="block text-center text-sm font-medium"
-						>Código de verificação</Label
-					>
+					<Label for="otp-input" class="block text-center text-sm font-medium">
+						Verification Code
+					</Label>
 					<div class="flex justify-center">
 						<InputOTP.Root
 							maxlength={6}
@@ -372,7 +371,7 @@
 						</InputOTP.Root>
 					</div>
 					<p class="text-center text-xs text-muted-foreground">
-						Digite o código de 6 dígitos enviado para seu email
+						Enter the 6-digit code sent to your email
 					</p>
 				</div>
 
@@ -390,11 +389,11 @@
 						class="text-sm"
 					>
 						{#if emailChangeState.resendCooldown > 0}
-							Reenviar em {emailChangeState.resendCooldown}s
+							Resend in {emailChangeState.resendCooldown}s
 						{:else if isSendingOtp}
-							Reenviando...
+							Resending...
 						{:else}
-							Reenviar código
+							Resend Code
 						{/if}
 					</Button>
 				</div>
@@ -408,22 +407,20 @@
 						class="flex-1"
 						disabled={isLoading}
 					>
-						Voltar
+						Back
 					</Button>
 					<Button type="submit" class="flex-1" disabled={isLoading}>
 						{#if isLoading}
 							<div class="flex items-center gap-2">
-								<div
-									class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-								></div>
-								Verificando...
+								<Spinner class="mr-2 size-4" />
+								Verifying...
 							</div>
 						{:else if emailChangeState.otpCode.length === 6}
-							<Shield class="mr-2 h-4 w-4" />
-							Verificar e salvar
+							<Shield class="mr-2 size-4" />
+							Verify and Save
 						{:else}
-							<Shield class="mr-2 h-4 w-4" />
-							Digite o código
+							<Shield class="mr-2 size-4" />
+							Enter Code
 						{/if}
 					</Button>
 				</div>

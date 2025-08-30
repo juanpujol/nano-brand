@@ -44,7 +44,7 @@
 <div class="w-full space-y-6 py-6">
 	<!-- Header -->
 	<div class="flex flex-col gap-4">
-		<div class="flex items-center justify-between">
+		<div class="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
 			<div class="flex items-center gap-4">
 				<Button variant="ghost" size="sm" onclick={handleBack} class="h-8 w-8 p-0">
 					<ArrowLeftIcon class="h-4 w-4" />
