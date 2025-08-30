@@ -1,3 +1,7 @@
+<script lang="ts">
+	let { children } = $props();
+</script>
+
 <div>
 	<header class="flex items-center justify-between border-b">
 		<div class="w-full max-w-screen-xl mx-auto flex items-center justify-between p-4">
