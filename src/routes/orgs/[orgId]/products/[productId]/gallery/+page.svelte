@@ -41,7 +41,7 @@
 	<title>{data.product.name} Gallery | NanoBrand</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-6xl space-y-6 p-6">
+<div class="w-full space-y-6 py-6">
 	<!-- Header -->
 	<div class="flex flex-col gap-4">
 		<div class="flex items-center justify-between">
@@ -56,7 +56,7 @@
 					</p>
 				</div>
 			</div>
-			
+
 			{#if data.images && data.images.length > 0}
 				<Button onclick={handleGenerateImage} class="gap-2">
 					<SparklesIcon class="h-4 w-4" />

@@ -68,7 +68,7 @@
 	<title>Products | NanoBrand</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-6xl space-y-6 p-6">
+<div class="w-full space-y-6 py-6">
 	<!-- Page Header -->
 	<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 		<div>
@@ -104,8 +104,8 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 			{#each data.products as product (product.id)}
 				<Card.Root class="group overflow-hidden transition-shadow hover:shadow-lg py-0 gap-0">
-					<a 
-						href="/orgs/{page.params.orgId}/products/{product.id}/gallery" 
+					<a
+						href="/orgs/{page.params.orgId}/products/{product.id}/gallery"
 						class="block"
 						aria-label="View {product.name} gallery"
 					>
