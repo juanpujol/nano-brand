@@ -6,7 +6,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import * as InputOTP from '$lib/components/ui/input-otp';
-	import Spinner from './spinner.svelte';
+	import Spinner from '$lib/components/spinner.svelte';
 
 	interface UserAccountData {
 		name: string;

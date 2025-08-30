@@ -7,7 +7,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import ThemeToggle from '$lib/components/layout/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 	import { INDUSTRY_OPTIONS, BRAND_VOICE_OPTIONS, LOGO_POLICY_OPTIONS } from '$lib/constants/organization-onboarding';

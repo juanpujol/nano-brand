@@ -3,7 +3,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { setMode, userPrefersMode } from 'mode-watcher';
 	import { createClient } from '$lib/supabase/client';
-	import UserAccountDialog from '$lib/components/user-account-dialog.svelte';
+	import UserAccountDialog from '$lib/components/layout/user-account-dialog.svelte';
 	import type { User } from '@supabase/supabase-js';
 	import {
 		User as UserIcon,

@@ -2,7 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import ThemeToggle from '$lib/components/layout/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
 
 	let { form } = $props();

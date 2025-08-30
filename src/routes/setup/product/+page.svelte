@@ -5,7 +5,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Badge } from '$lib/components/ui/badge';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import ThemeToggle from '$lib/components/layout/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
 	import { UploadIcon, XIcon, PackageIcon } from '@lucide/svelte';
 	import type { PageData } from './$types';

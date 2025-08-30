@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as InputOTP from '$lib/components/ui/input-otp';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import ThemeToggle from '$lib/components/layout/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
 	import { ArrowLeftIcon } from '@lucide/svelte';
 
