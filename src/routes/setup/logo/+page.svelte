@@ -270,6 +270,7 @@
 						<form
 							method="POST"
 							action="?/continue"
+							enctype="multipart/form-data"
 							use:enhance={() => {
 								loading = true;
 								return async ({ update }) => {
@@ -278,6 +279,18 @@
 								};
 							}}
 						>
+							<!-- Hidden orgId input -->
+							<input type="hidden" name="orgId" value={data.orgId} />
+							
+							<!-- Hidden file input -->
+							{#if files && files[0]}
+								<input type="file" name="logo" bind:files class="hidden" />
+							{/if}
+							
+							<!-- Hidden color palette inputs -->
+							{#each extractedColors as color}
+								<input type="hidden" name="colorPalette" value={color} />
+							{/each}
 							<Button
 								type="submit"
 								disabled={loading}

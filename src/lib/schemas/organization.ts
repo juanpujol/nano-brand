@@ -6,6 +6,7 @@ import {
 	optional,
 	pipe,
 	string,
+	regex,
 	type InferInput
 } from 'valibot';
 
@@ -25,4 +26,22 @@ export const createOrganizationSchema = object({
 	logoPolicy: pipe(string(), minLength(1, 'Logo policy is required'))
 });
 
+// Remote function schemas for organization operations
+export const updateOrganizationLogoRemoteSchema = object({
+	organizationId: string(),
+	logoFile: string(), // Will be handled as File in the remote function
+	colorPalette: array(
+		pipe(
+			string(),
+			regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid hex color format')
+		)
+	)
+});
+
+export const fetchOrganizationByIdSchema = object({
+	organizationId: string()
+});
+
 export type CreateOrganizationInput = InferInput<typeof createOrganizationSchema>;
+export type UpdateOrganizationLogoParams = InferInput<typeof updateOrganizationLogoRemoteSchema>;
+export type FetchOrganizationByIdParams = InferInput<typeof fetchOrganizationByIdSchema>;

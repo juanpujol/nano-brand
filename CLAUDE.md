@@ -45,7 +45,6 @@ import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 ### Language Requirements
 
 - **ALL CODE** must be in English: routes, variables, functions, file names, comments
-- **ONLY UI CONTENT/TEXT** should be in Portuguese (pt-BR)
 - **NEVER** mix languages in code structure
 
 ## Package Management & Commands
