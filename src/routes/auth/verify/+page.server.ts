@@ -62,7 +62,14 @@ export const actions: Actions = {
 			return fail(500, { error: 'Internal server error' });
 		}
 
-		// Redirect to setup page for new users
-		redirect(303, '/setup');
+		// Check if user has existing organizations
+		const { memberships } = await locals.safeGetSession();
+		
+		// Redirect based on organization status
+		if (memberships && memberships.length > 0) {
+			redirect(303, '/orgs');
+		} else {
+			redirect(303, '/setup');
+		}
 	}
 };
