@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) 
 	const orgId = url.searchParams.get('org');
 	
 	if (!orgId) {
-		redirect(303, '/new-org');
+		redirect(303, '/setup');
 	}
 
 	return {

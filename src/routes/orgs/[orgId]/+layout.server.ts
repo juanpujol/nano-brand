@@ -10,7 +10,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, param
 
 	// Ensure user has organization membership
 	if (!memberships || memberships.length === 0) {
-		redirect(303, '/new-org');
+		redirect(303, '/setup');
 	}
 
 	// Find the organization and verify user has access

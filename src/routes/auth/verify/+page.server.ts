@@ -62,7 +62,7 @@ export const actions: Actions = {
 			return fail(500, { error: 'Internal server error' });
 		}
 
-		// Redirect to new organization page for new users
-		redirect(303, '/new-org');
+		// Redirect to setup page for new users
+		redirect(303, '/setup');
 	}
 };

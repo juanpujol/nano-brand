@@ -110,7 +110,7 @@
 
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item class="gap-2 p-2">
-					<a href="/new-org" class="flex w-full cursor-pointer items-center gap-2">
+					<a href="/setup" class="flex w-full cursor-pointer items-center gap-2">
 						<div class="flex size-6 items-center justify-center rounded-md border bg-transparent">
 							<Plus class="size-4" />
 						</div>

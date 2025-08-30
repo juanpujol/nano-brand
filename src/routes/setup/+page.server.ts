@@ -90,6 +90,6 @@ export const actions: Actions = {
 		}
 
 		// Redirect to logo upload page after successful completion
-		redirect(303, `/new-org/logo?org=${orgId}`);
+		redirect(303, `/setup/logo?org=${orgId}`);
 	}
 };

@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 
 	// No organizations - go to setup
 	if (!memberships || memberships.length === 0) {
-		redirect(303, '/new-org');
+		redirect(303, '/setup');
 	}
 
 	// Only one organization - auto-redirect to organization
