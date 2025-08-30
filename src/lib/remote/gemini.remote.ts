@@ -7,10 +7,10 @@ import {
 	type GenerateImageResponse,
 	generateImageSchema,
 } from "$lib/schemas/gemini";
-import { 
-	buildComprehensiveSystemPrompt, 
+import {
 	type BrandContext,
-	type ProductContext
+	buildComprehensiveSystemPrompt,
+	type ProductContext,
 } from "$lib/constants/image-gen-prompts";
 
 // Initialize Gemini API
@@ -34,13 +34,26 @@ export const generateImage = command(
 			const { locals } = getRequestEvent();
 			const supabase = locals.supabase;
 
+			console.log({
+				organizationId,
+				productId,
+				prompt,
+				aspectRatio: "1:1",
+				negativePrompt,
+				includeLogo: false,
+				includeReferenceImages: false,
+			});
+
 			// Prepare content array for Gemini API
-			const contentParts: (string | { inlineData: { data: string; mimeType: string } })[] = [];
+			const contentParts:
+				(string | { inlineData: { data: string; mimeType: string } })[] = [];
 
 			// Fetch organization data for brand context
 			const { data: organization } = await supabase
 				.from("organizations")
-				.select("name, industry, description, brand_voice, logo_policy, color_palette, logo")
+				.select(
+					"name, industry, description, brand_voice, logo_policy, color_palette, logo",
+				)
 				.eq("id", organizationId)
 				.single();
 
@@ -67,14 +80,19 @@ export const generateImage = command(
 				.single();
 
 			// Build product context for atmosphere guidance
-			const productContext: ProductContext | undefined = product ? {
-				name: product.name,
-				description: product.description || undefined,
-				tags: product.tags || undefined,
-			} : undefined;
+			const productContext: ProductContext | undefined = product
+				? {
+					name: product.name,
+					description: product.description || undefined,
+					tags: product.tags || undefined,
+				}
+				: undefined;
 
 			// Generate comprehensive system prompt with brand and product context
-			const systemPrompt = buildComprehensiveSystemPrompt(brandContext, productContext);
+			const systemPrompt = buildComprehensiveSystemPrompt(
+				brandContext,
+				productContext,
+			);
 
 			// Fetch organization logo if requested
 			let logoBase64: string | null = null;
@@ -87,7 +105,7 @@ export const generateImage = command(
 					if (logoData) {
 						const logoBuffer = await logoData.arrayBuffer();
 						logoBase64 = Buffer.from(logoBuffer).toString("base64");
-						
+
 						contentParts.push({
 							inlineData: {
 								data: logoBase64,
@@ -110,10 +128,16 @@ export const generateImage = command(
 					.eq("organization_id", organizationId)
 					.single();
 
-				if (productWithImages?.reference_images && productWithImages.reference_images.length > 0) {
+				if (
+					productWithImages?.reference_images &&
+					productWithImages.reference_images.length > 0
+				) {
 					// Limit to first 2 reference images (leaving room for logo + prompt)
 					const maxReferenceImages = logoBase64 ? 2 : 3;
-					const referenceImages = productWithImages.reference_images.slice(0, maxReferenceImages);
+					const referenceImages = productWithImages.reference_images.slice(
+						0,
+						maxReferenceImages,
+					);
 
 					for (const imagePath of referenceImages) {
 						try {
@@ -124,7 +148,7 @@ export const generateImage = command(
 							if (imageData) {
 								const imageBuffer = await imageData.arrayBuffer();
 								const imageBase64 = Buffer.from(imageBuffer).toString("base64");
-								
+
 								contentParts.push({
 									inlineData: {
 										data: imageBase64,
@@ -133,7 +157,10 @@ export const generateImage = command(
 								});
 							}
 						} catch (err) {
-							console.error(`Failed to load reference image ${imagePath}:`, err);
+							console.error(
+								`Failed to load reference image ${imagePath}:`,
+								err,
+							);
 						}
 					}
 				}
@@ -144,12 +171,18 @@ export const generateImage = command(
 
 			// Add context about included images
 			if (logoBase64) {
-				fullPrompt += `\n\n## BRAND LOGO PROVIDED\nThe brand logo image has been provided. Use it according to the logo policy guidelines above.`;
+				fullPrompt +=
+					`\n\n## BRAND LOGO PROVIDED\nThe brand logo image has been provided. Use it according to the logo policy guidelines above.`;
 			}
-			
-			if (includeReferenceImages && contentParts.length > (logoBase64 ? 1 : 0)) {
+
+			if (
+				includeReferenceImages && contentParts.length > (logoBase64 ? 1 : 0)
+			) {
 				const referenceCount = contentParts.length - (logoBase64 ? 1 : 0);
-				fullPrompt += `\n\n## REFERENCE IMAGES PROVIDED\n${referenceCount} reference image${referenceCount > 1 ? 's have' : ' has'} been provided for product context and style guidance.`;
+				fullPrompt +=
+					`\n\n## REFERENCE IMAGES PROVIDED\n${referenceCount} reference image${
+						referenceCount > 1 ? "s have" : " has"
+					} been provided for product context and style guidance.`;
 			}
 
 			if (negativePrompt) {
@@ -157,7 +190,8 @@ export const generateImage = command(
 			}
 
 			// Add aspect ratio instruction
-			fullPrompt += `\n\n## TECHNICAL REQUIREMENTS\nAspect ratio: ${aspectRatio}`;
+			fullPrompt +=
+				`\n\n## TECHNICAL REQUIREMENTS\nAspect ratio: ${aspectRatio}`;
 
 			// Add the comprehensive prompt to content parts
 			contentParts.push(fullPrompt);
@@ -174,7 +208,7 @@ export const generateImage = command(
 			const response = result.response;
 			const imageData = response.candidates?.[0]?.content?.parts?.[0];
 
-			if (!imageData || !("inlineData" in imageData)) {
+			if (!imageData || !("inlineData" in imageData) || !imageData.inlineData) {
 				throw new Error("No image data received from Gemini API");
 			}
 
@@ -185,7 +219,7 @@ export const generateImage = command(
 			const timestamp = Date.now();
 			const fileName = `generated_${productId}_${timestamp}.png`;
 			const filePath =
-				`products/${organizationId}/${productId}/generated/${fileName}`;
+				`${organizationId}/products/${productId}/generated/${fileName}`;
 
 			// Upload image to Supabase Storage
 			const { error: uploadError } = await supabase.storage
@@ -325,7 +359,10 @@ export const editImage = command(
 			const response = result.response;
 			const editedImageData = response.candidates?.[0]?.content?.parts?.[0];
 
-			if (!editedImageData || !("inlineData" in editedImageData)) {
+			if (
+				!editedImageData || !("inlineData" in editedImageData) ||
+				!editedImageData.inlineData
+			) {
 				throw new Error("No edited image data received from Gemini API");
 			}
 
@@ -339,7 +376,7 @@ export const editImage = command(
 			const timestamp = Date.now();
 			const fileName = `edited_${productId}_${timestamp}.png`;
 			const filePath =
-				`products/${organizationId}/${productId}/generated/${fileName}`;
+				`${organizationId}/products/${productId}/generated/${fileName}`;
 
 			// Upload edited image to Supabase Storage
 			const { error: uploadError } = await supabase.storage

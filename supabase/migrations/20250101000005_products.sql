@@ -8,7 +8,7 @@ CREATE TABLE products (
   name TEXT NOT NULL,
   description TEXT,
   tags TEXT[] DEFAULT '{}',
-  reference_images TEXT[] DEFAULT '{}' CHECK (array_length(reference_images, 1) IS NULL OR array_length(reference_images, 1) <= 5),
+  reference_images TEXT[] DEFAULT '{}' CHECK (array_length(reference_images, 1) IS NULL OR array_length(reference_images, 1) <= 6),
   created_by UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -71,16 +71,16 @@ CREATE POLICY "Members can create products in their organizations" ON products
     AND created_by = (select auth.uid())
   );
 
--- UPDATE: Only product creator or org admin can update
+-- UPDATE: Any org member can update products in their organization
 CREATE POLICY "Only creator or admin can update products" ON products
   FOR UPDATE USING (
-    can_manage_product((select auth.uid()), products.id)
+    organization_id IN (SELECT organization_id FROM get_user_organizations((select auth.uid())))
   );
 
--- DELETE: Only product creator or org admin can delete
+-- DELETE: Any org member can delete products in their organization
 CREATE POLICY "Only creator or admin can delete products" ON products
   FOR DELETE USING (
-    can_manage_product((select auth.uid()), products.id)
+    organization_id IN (SELECT organization_id FROM get_user_organizations((select auth.uid())))
   );
 
 -- RLS policies for product_images
@@ -94,20 +94,32 @@ CREATE POLICY "Users can view product images they have access to" ON product_ima
     )
   );
 
--- INSERT: Users can add images to products they can manage
+-- INSERT: Users can add images to products in their organization
 CREATE POLICY "Users can add images to manageable products" ON product_images
   FOR INSERT WITH CHECK (
-    can_manage_product((select auth.uid()), product_id)
+    EXISTS(
+      SELECT 1 FROM products p 
+      WHERE p.id = product_id 
+      AND p.organization_id IN (SELECT organization_id FROM get_user_organizations((select auth.uid())))
+    )
   );
 
--- UPDATE: Users can update images for products they can manage
+-- UPDATE: Users can update images for products in their organization
 CREATE POLICY "Users can update images for manageable products" ON product_images
   FOR UPDATE USING (
-    can_manage_product((select auth.uid()), product_id)
+    EXISTS(
+      SELECT 1 FROM products p 
+      WHERE p.id = product_id 
+      AND p.organization_id IN (SELECT organization_id FROM get_user_organizations((select auth.uid())))
+    )
   );
 
--- DELETE: Users can delete images for products they can manage
+-- DELETE: Users can delete images for products in their organization
 CREATE POLICY "Users can delete images for manageable products" ON product_images
   FOR DELETE USING (
-    can_manage_product((select auth.uid()), product_id)
+    EXISTS(
+      SELECT 1 FROM products p 
+      WHERE p.id = product_id 
+      AND p.organization_id IN (SELECT organization_id FROM get_user_organizations((select auth.uid())))
+    )
   );

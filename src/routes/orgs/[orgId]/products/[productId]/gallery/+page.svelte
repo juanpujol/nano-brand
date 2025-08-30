@@ -78,7 +78,7 @@
 		<!-- Images Grid -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 			{#each data.images as image (image.id)}
-				<Card.Root class="group overflow-hidden transition-shadow hover:shadow-lg">
+				<Card.Root class="group overflow-hidden transition-shadow hover:shadow-lg p-0">
 					<button
 						type="button"
 						class="w-full aspect-square relative overflow-hidden bg-muted cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
