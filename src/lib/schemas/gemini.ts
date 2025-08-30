@@ -5,6 +5,7 @@ import {
 	array,
 	union,
 	literal,
+	boolean,
 	type InferInput
 } from 'valibot';
 
@@ -21,7 +22,10 @@ export const generateImageSchema = object({
 		literal('3:4'),
 		literal('4:3')
 	]), '1:1'),
-	negativePrompt: optional(string())
+	negativePrompt: optional(string()),
+	// Image context options
+	includeLogo: optional(boolean(), false),
+	includeReferenceImages: optional(boolean(), false)
 });
 
 // Edit Image schema
