@@ -1,5 +1,7 @@
 {
-	"deno.enablePaths": ["supabase/functions"],
+	"deno.enablePaths": [
+		"supabase/functions"
+	],
 	"deno.lint": true,
 	"deno.unstable": [
 		"bare-node-builtins",
@@ -21,6 +23,7 @@
 	},
 	"biome.enabled": false,
 	"cSpell.words": [
+		"colorthief",
 		"favorited",
 		"gridstack",
 		"ilike",

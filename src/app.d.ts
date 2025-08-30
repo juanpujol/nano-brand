@@ -10,6 +10,7 @@ declare module '@tanstack/table-core' {
 	}
 }
 
+
 interface Organization {
 	id: string;
 	name: string;

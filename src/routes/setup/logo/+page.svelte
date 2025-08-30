@@ -7,16 +7,44 @@
 	import { enhance } from '$app/forms';
 	import { ArrowRight, UploadIcon } from '@lucide/svelte';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+	import type ColorThief from 'colorthief';
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let { data }: { data: PageData } = $props();
 
 	let files = $state<FileList>();
 	let imagePreview = $state<string>('');
 	let loading = $state(false);
 	let dragOver = $state(false);
+	let colorThief: ColorThief | undefined = $state();
 
 	// Extracted colors placeholder
 	let extractedColors = $state<string[]>(['#3B82F6', '#8B5CF6', '#EC4899']);
+
+	onMount(async () => {
+		const ColorThief = (await import('colorthief')).default;
+		colorThief = new ColorThief();
+	});
+
+	// Convert RGB array to hex
+	function rgbToHex(rgb: number[]): string {
+		return '#' + rgb.map(x => x.toString(16).padStart(2, '0')).join('');
+	}
+
+	// Extract colors from image
+	function extractColorsFromImage(img: EventTarget & Element) {
+		if (!colorThief || !(img instanceof HTMLImageElement)) return;
+
+		try {
+			const palette = colorThief.getPalette(img, 3);
+			if (palette && palette.length >= 3) {
+				extractedColors = palette.map(rgbToHex);
+			}
+		} catch (err) {
+			console.error('Error extracting colors:', err);
+		}
+	}
 
 	// Handle file selection
 	function handleFileSelect(selectedFiles: FileList | undefined) {
@@ -195,6 +223,8 @@
 													src={imagePreview}
 													alt="Logo preview"
 													class="max-h-32 max-w-full object-contain"
+													onload={(e) => extractColorsFromImage(e.currentTarget)}
+													crossorigin="anonymous"
 												/>
 											</div>
 										</div>
@@ -211,7 +241,7 @@
 									</div>
 
 									<div class="flex flex-col gap-4 items-center">
-										{#each extractedColors as color, index}
+										{#each extractedColors as color, index (index)}
 											<div class="flex items-center space-x-4">
 												<div class="flex-shrink-0 w-16">
 													<Label class="text-sm font-medium">
