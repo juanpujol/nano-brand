@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
-import { createWebhookFormSchema } from '$lib/schemas/webhooks';
+import { createWebhookFormSchema } from '$lib/schemas/webhook';
 import { fetchWebhooks, createWebhook } from '$lib/remote/webhooks.remote';
 
 export const load: PageServerLoad = async ({ params, url }) => {

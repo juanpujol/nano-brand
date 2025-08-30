@@ -21,7 +21,7 @@
 	import { toast } from 'svelte-sonner';
 	import { enhance as sveltekitEnhance } from '$app/forms';
 	import * as Form from '$lib/components/ui/form';
-	import { updateWebhookFormSchema } from '$lib/schemas/webhooks';
+	import { updateWebhookFormSchema } from '$lib/schemas/webhook';
 	import { AlertError, AlertSuccess, AlertWarning } from '$lib/components/common/alerts';
 	import type { ActionResult } from '@sveltejs/kit';
 	import Spinner from '$lib/components/spinner.svelte';

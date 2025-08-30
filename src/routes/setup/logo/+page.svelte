@@ -9,6 +9,7 @@
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import type ColorThief from 'colorthief';
+	import { extractColorsFromImage } from './utils/color-extraction';
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let { data }: { data: PageData } = $props();
@@ -27,23 +28,12 @@
 		colorThief = new ColorThief();
 	});
 
-	// Convert RGB array to hex
-	function rgbToHex(rgb: number[]): string {
-		return '#' + rgb.map(x => x.toString(16).padStart(2, '0')).join('');
-	}
-
-	// Extract colors from image
-	function extractColorsFromImage(img: EventTarget & Element) {
+	// Extract colors from image using utility function
+	function handleColorExtraction(img: EventTarget & Element) {
 		if (!colorThief || !(img instanceof HTMLImageElement)) return;
-
-		try {
-			const palette = colorThief.getPalette(img, 3);
-			if (palette && palette.length >= 3) {
-				extractedColors = palette.map(rgbToHex);
-			}
-		} catch (err) {
-			console.error('Error extracting colors:', err);
-		}
+		
+		const colors = extractColorsFromImage(colorThief, img);
+		extractedColors = colors;
 	}
 
 	// Handle file selection
@@ -223,7 +213,7 @@
 													src={imagePreview}
 													alt="Logo preview"
 													class="max-h-32 max-w-full object-contain"
-													onload={(e) => extractColorsFromImage(e.currentTarget)}
+													onload={(e) => handleColorExtraction(e.currentTarget)}
 													crossorigin="anonymous"
 												/>
 											</div>

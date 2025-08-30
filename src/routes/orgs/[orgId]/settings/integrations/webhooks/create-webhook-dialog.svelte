@@ -9,7 +9,7 @@
 	import { valibotClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 	import * as Form from '$lib/components/ui/form';
-	import { createWebhookFormSchema } from '$lib/schemas/webhooks';
+	import { createWebhookFormSchema } from '$lib/schemas/webhook';
 	import { type InferInput } from 'valibot';
 
 	interface Props {

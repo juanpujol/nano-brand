@@ -11,7 +11,7 @@ import {
 	updateWebhookMappingsSchema,
 	updateCaptureNextSchema,
 	type Webhook
-} from '$lib/schemas/webhooks';
+} from '$lib/schemas/webhook';
 
 /**
  * Fetches webhooks with pagination, search, and sorting capabilities.

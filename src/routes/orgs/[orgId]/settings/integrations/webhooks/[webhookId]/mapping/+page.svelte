@@ -17,7 +17,7 @@
 	import WebhookPayloadDialog from './components/webhook-payload-dialog.svelte';
 	import EmptyState from './components/empty-state.svelte';
 	import { updateWebhookMappings, updateCaptureNext } from '$lib/remote/webhooks.remote';
-	import type { UpdateMappingsParams } from '$lib/schemas/webhooks';
+	import type { UpdateMappingsParams } from '$lib/schemas/webhook';
 	import { Switch } from '$lib/components/ui/switch';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { invalidateAll } from '$app/navigation';

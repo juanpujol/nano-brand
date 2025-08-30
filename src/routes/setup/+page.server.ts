@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { safeParse } from 'valibot';
-import { createOrganizationSchema } from '$lib/schemas/organization-onboarding';
+import { createOrganizationSchema } from '$lib/schemas/organization';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { user } = await safeGetSession();
