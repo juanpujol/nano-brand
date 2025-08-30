@@ -4,16 +4,11 @@ import { safeParse } from 'valibot';
 import { createOrganizationSchema } from '$lib/schemas/organization-onboarding';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
-	const { user, memberships } = await safeGetSession();
+	const { user } = await safeGetSession();
 
 	// If not authenticated, redirect to login
 	if (!user) {
 		redirect(303, '/auth/login');
-	}
-
-	// If user already has an organization, redirect to orgs
-	if (memberships && memberships.length > 0) {
-		redirect(303, '/orgs');
 	}
 
 	return {

@@ -69,8 +69,8 @@ const authGuard: Handle = async ({ event, resolve }) => {
 			redirect(303, '/new-org');
 		}
 
-		// If user has organization and on login/setup page, redirect to app
-		if (hasOrg && (event.url.pathname === '/auth/login' || isSetupOrgPage)) {
+		// If user has organization and on login page, redirect to app
+		if (hasOrg && event.url.pathname === '/auth/login') {
 			redirect(303, '/');
 		}
 
