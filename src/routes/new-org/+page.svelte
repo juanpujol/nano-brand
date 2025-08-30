@@ -6,6 +6,7 @@
 	import * as Select from '$lib/components/ui/select';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Badge } from '$lib/components/ui/badge';
+	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import ThemeToggle from '$lib/components/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
@@ -25,7 +26,7 @@
 	<title>Create Organization | NanoBrand</title>
 </svelte:head>
 
-<div class="grid min-h-svh bg-muted dark:bg-background">
+<div class="grid min-h-svh bg-gradient-to-br from-blue-200 via-white to-purple-200 dark:from-gray-900 dark:via-background dark:to-stone-950">
 	<!-- Theme Toggle -->
 	<div class="absolute top-6 right-6 z-10">
 		<ThemeToggle />
@@ -170,21 +171,19 @@
 
 								<div class="grid gap-3">
 									<Label>Logo policy *</Label>
-									<div class="space-y-2 flex flex-col sm:flex-row gap-4">
-										{#each LOGO_POLICY_OPTIONS as option (option.value)}
-											<label class="flex items-center gap-3 cursor-pointer">
-												<input
-													type="radio"
-													name="logoPolicy"
-													value={option.value}
-													bind:group={logoPolicy}
-													disabled={loading}
-													class="h-4 w-4 text-primary"
-												/>
-												<span class="text-sm">{option.label}</span>
-											</label>
-										{/each}
-									</div>
+									<p class="text-xs text-muted-foreground">
+										How often is your logo being used in your marketing materials?
+									</p>
+									<RadioGroup.Root bind:value={logoPolicy} disabled={loading}>
+										<div class="flex flex-col sm:flex-row gap-4">
+											{#each LOGO_POLICY_OPTIONS as option (option.value)}
+												<div class="flex items-center space-x-2">
+													<RadioGroup.Item value={option.value} id="logo-policy-{option.value}" />
+													<Label for="logo-policy-{option.value}" class="text-sm cursor-pointer">{option.label}</Label>
+												</div>
+											{/each}
+										</div>
+									</RadioGroup.Root>
 								</div>
 							</div>
 						</Card.Content>

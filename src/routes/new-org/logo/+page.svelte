@@ -5,7 +5,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import ThemeToggle from '$lib/components/theme-toggle.svelte';
 	import { enhance } from '$app/forms';
-	import { UploadIcon } from '@lucide/svelte';
+	import { ArrowRight, UploadIcon } from '@lucide/svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -78,7 +78,7 @@
 	<title>Add Brand Logo | NanoBrand</title>
 </svelte:head>
 
-<div class="grid min-h-svh bg-muted dark:bg-background">
+<div class="grid min-h-svh bg-gradient-to-br from-blue-200 via-white to-purple-200 dark:from-gray-900 dark:via-background dark:to-stone-950">
 	<!-- Theme Toggle -->
 	<div class="absolute top-6 right-6 z-10">
 		<ThemeToggle />
@@ -136,9 +136,9 @@
 
 					<Card.Root>
 						<Card.Content class="px-6">
-							<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 								<!-- Left Column: Logo Upload -->
-								<div class="space-y-6 border-r border-border pr-6">
+								<div class="space-y-6 sm:border-r border-border sm:pr-6">
 									<div class="text-center">
 										<h3 class="text-lg font-semibold">Upload Logo</h3>
 										<p class="text-sm text-muted-foreground mt-1">Add your brand logo</p>
@@ -161,7 +161,7 @@
 												</div>
 												<div>
 													<p class="font-medium">
-														Drag and drop your logo here
+														Drag and drop your logo
 													</p>
 													<p class="text-sm text-muted-foreground">
 														or click to browse files
@@ -186,7 +186,7 @@
 										<div class="space-y-4">
 											<div class="flex items-center justify-between">
 												<Label class="text-sm font-medium">Logo Preview</Label>
-												<Button variant="ghost" size="sm" onclick={clearImage}>
+												<Button variant="outline" size="sm" onclick={clearImage}>
 													Remove
 												</Button>
 											</div>
@@ -210,7 +210,7 @@
 										</p>
 									</div>
 
-									<div class="space-y-4">
+									<div class="flex flex-col gap-4 items-center">
 										{#each extractedColors as color, index}
 											<div class="flex items-center space-x-4">
 												<div class="flex-shrink-0 w-16">
@@ -247,16 +247,6 @@
 
 					<!-- Action Buttons -->
 					<div class="flex gap-3 justify-end">
-						<form method="POST" action="?/skip">
-							<Button
-								type="submit"
-								variant="outline"
-								disabled={loading}
-							>
-								Skip for now
-							</Button>
-						</form>
-
 						<form
 							method="POST"
 							action="?/continue"
@@ -279,6 +269,7 @@
 									</div>
 								{:else}
 									Continue to dashboard
+									<ArrowRight class="w-4 h-4 ml-2" />
 								{/if}
 							</Button>
 						</form>
